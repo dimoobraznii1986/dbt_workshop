@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: stg_jaffle_shop__orders
+    description: This model cleans up order data
+    columns:
+      - name: order_id
+        description: Primary key
+        tests:
+          - unique
+          - not_null
+      - name: status
+        tests:
+          - accepted_values:
+              values:
+                ["placed", "shipped", "completed", "return_pending", "returned"]
+      - name: customer_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
