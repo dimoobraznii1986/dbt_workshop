@@ -6,7 +6,7 @@ models:
     columns:
       - name: order_id
         description: Primary key
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: status
@@ -15,8 +15,8 @@ models:
               values:
                 ["placed", "shipped", "completed", "return_pending", "returned"]
       - name: customer_id
-        tests:
+        data_tests:
           - not_null
           - relationships:
-              to: ref('stg_customers')
+              to: ref('stg_jaffle_shop__customers')
               field: customer_id

@@ -30,3 +30,23 @@ repos:
     hooks:
       - id: sqlfmt
         files: ^(models|analyses|tests)/.*.sql$
+
+  - repo: https://github.com/dbt-checkpoint/dbt-checkpoint
+    rev: v2.0.4
+    hooks:
+      - id: check-model-has-description
+      - id: check-model-has-tests-by-group
+        args: ["--tests", "not_null", "--test-cnt", "1", "--"]
+      - id: check-model-has-tests-by-group
+        args:
+          [
+            "--tests",
+            "unique",
+            "unique_combination_of_columns",
+            "--test-cnt",
+            "1",
+            "--",
+          ]
+
+      - id: check-macro-has-description
+        files: ^(macros/).*$

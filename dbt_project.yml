@@ -33,3 +33,6 @@ models:
     staging:
       +materialized: view
       +tags: staging
+    mart:
+      +materialized: view
+      +tags: mart

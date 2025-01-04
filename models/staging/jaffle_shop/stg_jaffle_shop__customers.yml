@@ -6,6 +6,6 @@ models:
     columns:
       - name: customer_id
         description: Primary key
-        tests:
+        data_tests:
           - unique
           - not_null

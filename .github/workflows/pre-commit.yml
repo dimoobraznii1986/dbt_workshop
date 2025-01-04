@@ -1,4 +1,4 @@
-name: Run Pre-commit Hooks
+name: Run Pre-commit Hooks with Postgres
 
 on:
   pull_request:
@@ -13,11 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the code and fetch all branches
+      # Checkout the code
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # Ensure the full history is fetched, not just the last commit
+          fetch-depth: 0
 
       # Set up Python environment
       - name: Set up Python
@@ -32,17 +32,31 @@ jobs:
           . venv/bin/activate
           pip install --upgrade pip
           pip install -r requirements.txt
+          pip install dbt-postgres
           pre-commit install --install-hooks
 
-      # Fetch the main branch to ensure it's available for comparison
-      - name: Fetch main branch
-        run: git fetch origin main
+      # Install dbt package dependencies
+      - name: Install dbt package dependencies
+        run: |
+          . venv/bin/activate
+          dbt deps
 
-      # Run pre-commit on all files changed between the current branch and main
+      # Compile the dbt project
+      - name: Compile dbt project
+        run: |
+          . venv/bin/activate
+          dbt compile
+        env:
+          DBT_USER: ${{ secrets.DBT_USER }}
+          DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
+          DBT_HOST: ${{ secrets.DBT_HOST }}
+          DBT_DATABASE: ${{ secrets.DBT_DATABASE }}
+          DBT_SCHEMA: ${{ secrets.DBT_SCHEMA }}
+
+      # Run pre-commit hooks
       - name: Run pre-commit on all changed files
         run: |
           . venv/bin/activate
-          # Get the list of files changed between the current branch and main
           files=$(git diff --name-only origin/main)
           if [ -n "$files" ]; then
             pre-commit run --files $files
