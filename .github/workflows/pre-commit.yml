@@ -45,7 +45,7 @@ jobs:
       - name: Compile dbt project
         run: |
           . venv/bin/activate
-          dbt compile
+          dbt compile --profiles-dir .
         env:
           DBT_USER: ${{ secrets.DBT_USER }}
           DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
