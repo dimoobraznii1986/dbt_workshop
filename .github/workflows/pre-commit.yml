@@ -42,6 +42,7 @@ jobs:
       # Copy the profiles.yml file to the correct location
       - name: Copy profiles.yml to /home/runner/.dbt
         run: |
+          mkdir -p /home/runner/.dbt
           cp ./profiles.yml /home/runner/.dbt/profiles.yml
 
       # Compile the dbt project
