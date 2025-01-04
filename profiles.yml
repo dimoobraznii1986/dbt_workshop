@@ -8,4 +8,13 @@ dbtworkshop:
       port: 5432
       dbname: '{{ env_var("DBT_DATABASE") }}'
       schema: dev
+    ci:
+      type: postgres
+      host: '{{ env_var("DBT_HOST") }}'
+      user: '{{ env_var("DBT_USER") }}'
+      password: '{{ env_var("DBT_PASSWORD") }}'
+      port: 5432
+      dbname: '{{ env_var("DBT_DATABASE") }}'
+      schema: ci_schema
+
   target: dev
