@@ -43,13 +43,12 @@ jobs:
       - name: Compile dbt project
         run: |
           . venv/bin/activate
-          dbt compile --profiles-dir .
+          dbt compile
         env:
           DBT_USER: ${{ secrets.DBT_USER }}
           DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
           DBT_HOST: ${{ secrets.DBT_HOST }}
           DBT_DATABASE: ${{ secrets.DBT_DATABASE }}
-          DBT_SCHEMA: ${{ secrets.DBT_SCHEMA }}
 
       # Run pre-commit hooks
       - name: Run pre-commit on all changed files
