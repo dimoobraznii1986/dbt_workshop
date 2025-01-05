@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: dim_customers
+    description: "Aggregates customer information with their order statistics."
+
+    columns:
+      - name: customer_id
+        description: "Unique identifier for each customer."
+        data_tests:
+          - unique
+          - not_null
+
+      - name: first_name
+        description: "Customer's first name."
+
+      - name: last_name
+        description: "Customer's last name."
+
+      - name: first_order_date
+        description: "The date of the customer's first order."
+
+      - name: most_recent_order_date
+        description: "The date of the customer's most recent order."
+
+      - name: number_of_orders
+        description: "The total number of orders placed by the customer."

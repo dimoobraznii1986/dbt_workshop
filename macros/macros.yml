@@ -1,0 +1,9 @@
+version: 2
+
+macros:
+  - name: add_etl_timestamp
+    description: |
+      This macro generates a UTC timestamp representing the current date and time when executed.
+      It is useful for tracking ETL processes by adding a standardized `etl_timestamp_utc` column
+      in transformation queries.
+    arguments: []

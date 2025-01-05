@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: fct_orders
+    description: "Combines order and payment information, summarizing successful payment amounts for each order."
+    columns:
+      - name: order_id
+        description: "Unique identifier for each order."
+        data_tests:
+          - not_null
+      - name: customer_id
+        description: "Unique identifier for the customer who placed the order."
+        data_tests:
+          - not_null
+      - name: order_date
+        description: "The date when the order was placed."
+        data_tests:
+          - not_null
+      - name: amount
+        description: "The total amount of successful payments for the order. Defaults to 0 if no successful payments exist."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_id
+            - customer_id
+            - order_date
