@@ -108,7 +108,7 @@ jobs:
       - name: Run dbt build (CI)
         run: |
           . venv/bin/activate
-          dbt run --target ci  # Specify the CI target
+          dbt run --target ci
         env:
           DBT_USER: ${{ secrets.DBT_USER }}
           DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}

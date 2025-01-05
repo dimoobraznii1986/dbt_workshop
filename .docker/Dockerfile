@@ -4,7 +4,7 @@ ARG build_for=linux/amd64
 # Base image
 FROM python:3.11.6-slim-bullseye as base
 
-# Linux Dependencies
+# Install necessary Linux dependencies
 RUN apt-get update && apt-get install -y \
   python3-dev \
   git \
@@ -14,19 +14,34 @@ RUN apt-get update && apt-get install -y \
   libsasl2-dev \
   libsasl2-modules \
   make \
-  curl
+  curl \
+  && rm -rf /var/lib/apt/lists/*
 
-# Set docker basics
+# Set working directory
 WORKDIR /usr/app/dbt/
 VOLUME /usr/app
 
+# Set up Python virtual environment
 RUN python -m venv venv
-RUN . venv/bin/activate
 
+# Install dependencies from requirements.txt
 COPY ./requirements.txt ./
-RUN pip install -r requirements.txt
+RUN . venv/bin/activate && pip install -r requirements.txt
 
+# Copy profiles.yml for DBT configuration
 COPY ./profiles.yml /usr/app/dbt/profiles.yml
+
+# Copy all DBT files into the container
 COPY . .
 
-RUN dbt deps
+# Install DBT dependencies (e.g., DBT packages, adapters)
+RUN . venv/bin/activate && dbt deps
+
+# Ensure proper environment variables are set for DBT commands (if needed)
+ENV DBT_USER=${DBT_USER}
+ENV DBT_PASSWORD=${DBT_PASSWORD}
+ENV DBT_HOST=${DBT_HOST}
+ENV DBT_DATABASE=${DBT_DATABASE}
+
+# DBT command to initialize and build models
+RUN . venv/bin/activate && dbt run --target dev  # Change 'dev' to your target if needed
